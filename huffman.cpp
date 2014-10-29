@@ -1,10 +1,10 @@
-#include "huffman.h"
 #include <string>
+#include "huffman.h"
 
 std::string huffman::encode(std::string input) {
-	return "123";
+	return "Encode method called";
 }
 
 std::string huffman::decode(std::string input) {
-	return "123";
+	return "Decode method called";
 }
