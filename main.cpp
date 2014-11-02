@@ -29,6 +29,8 @@ int main() {
 
 		#ifdef DES
 			des d;
+			std::string encoded = d.encode(input);
+			std::cout << "Encoded string : "<< encoded << std::endl;
 		#endif
 	}
 	return 0;
