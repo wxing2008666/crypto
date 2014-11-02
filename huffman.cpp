@@ -98,7 +98,18 @@ void huffman::change_bytecode(std::vector<unit>& v, char byte) {
 }
 
 std::string huffman::decode(const std::string& input) {
-	return "Decode method called";
+	std::string decoded;
+	std::string current_prefix;
+	for(char letter: input) {
+		current_prefix += letter;
+		for(unit u: codes) {
+			if(u.bytecode == current_prefix) {
+				decoded += u.symbol;
+				current_prefix.clear();
+			}
+		}
+	}
+	return decoded;
 }
 
 
