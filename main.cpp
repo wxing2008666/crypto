@@ -3,6 +3,6 @@
 
 int main() {
 	huffman h;
-	std::cout << h.encode("test_string_for_encode") << std::endl;
+	std::cout << "Encoded string : "<< h.encode("abbcccdddd") << std::endl;
 	return 0;
 }

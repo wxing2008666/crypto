@@ -17,21 +17,17 @@ struct unit{
 class huffman : public crypto
 {
 public:
-	huffman() {
-		std::cout << "huffman init " << m_alphabet.size() << std::endl;
-
-	}
+	huffman() {}
+	~huffman() {}
 
 	virtual std::string encode(const std::string& input) override;
 	virtual std::string decode(const std::string& input) override;
 
-	~huffman() {
-		std::cout << "huffman Destruct" << std::endl;
-	}
 protected:
 	void calculate_frequency(const std::string& input);
-
+	void change_bytecode(std::vector<unit>& v, char byte);
+	void current_tree_state(const std::vector<std::vector<unit>>& tree);
 
 	std::vector<unit> m_alphabet;
-	
+	std::vector<unit> codes;
 };
