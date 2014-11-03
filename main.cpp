@@ -28,7 +28,11 @@ int main() {
 		#endif
 
 		#ifdef DES
+			std::string key;
+			cout << "Enter key(8-byte) :";
+			cin >> key;
 			des d;
+			d.convert_key(key);
 			std::string encoded = d.encode(input);
 			std::cout << "Encoded string : "<< encoded << std::endl;
 		#endif

@@ -31,6 +31,8 @@ protected:
 	std::string to_bit_string(const bitset<BLOCK_SIZE_64>& block);
 	std::string to_std_string(const bitset<BLOCK_SIZE_64>& block);
 	bitset<BLOCK_SIZE_64> initial_permutation(const bitset<BLOCK_SIZE_64>& block);
+	bitset<BLOCK_SIZE_32> s_permutation(const bitset<BLOCK_SIZE_32>& block);
+	bitset<BLOCK_SIZE_64> inverse_permutation(const bitset<BLOCK_SIZE_64>& block);
 	std::string calculating(const std::string& input, bool is_encode);
 	bitset<BLOCK_SIZE_48> get_key(bitset<BLOCK_SIZE_28> LKi, bitset<BLOCK_SIZE_28> RKi);
 	bitset<BLOCK_SIZE_32> expansion_func(bitset<BLOCK_SIZE_32> Ri, bitset<BLOCK_SIZE_48> Ki);

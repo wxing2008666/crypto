@@ -8,6 +8,7 @@ inline bool shift(char ch, int count) {
 
 std::string des::calculating(const std::string& input, bool is_encode) {
 	split_input_string(input);
+	std::string result;
 
 	#ifdef DEBUG
 		int count = 1;
@@ -48,9 +49,15 @@ std::string des::calculating(const std::string& input, bool is_encode) {
 
 			L_part = L_part^=e_func;				
 		}
+		for (int j = 0; j < BLOCK_SIZE_32; j++) {
+			current_block.set(j, L_part[j]);
+			current_block.set(j + BLOCK_SIZE_32, R_part[j]);
+		}
+		current_block = inverse_permutation(current_block);
+		result += to_std_string(current_block);
 	}
 
-	return input;
+	return result;
 }
 bitset<BLOCK_SIZE_48> des::get_key(bitset<BLOCK_SIZE_28> LKi, bitset<BLOCK_SIZE_28> RKi) {
 	bitset<BLOCK_SIZE_48> result;
@@ -68,7 +75,48 @@ bitset<BLOCK_SIZE_48> des::get_key(bitset<BLOCK_SIZE_28> LKi, bitset<BLOCK_SIZE_
 
 bitset<BLOCK_SIZE_32> des::expansion_func(bitset<BLOCK_SIZE_32> Ri, bitset<BLOCK_SIZE_48> Ki) {
 	bitset<BLOCK_SIZE_32> result;
-	return result;
+
+	//	Extention function
+	bitset<BLOCK_SIZE_48> Ri_extension; // from 32 to 48
+	bitset<BLOCK_SIZE_48> result_extension;
+
+	for (int i = 0; i < BLOCK_SIZE_48; i++) {
+		Ri_extension.set(i, Ri[extension_table[i] - 1]);
+	}
+
+	//"^="  ~  "XOR"
+	result_extension = Ri_extension ^= Ki;
+
+	// work with s-blocks (8 blocks)
+	for (int i = 0; i < 8; ++i) {
+		bitset<6> result_subblock;
+		for (int j = 0; j < 6; j++) {
+			result_subblock.set(j, result_extension[i * 6 + j]);
+		}
+
+		bitset<2> a;
+		a.set(0,result_subblock[0]);
+		a.set(1,result_subblock[5]);
+
+		unsigned long row_index = a.to_ulong();
+
+		bitset<4> b;
+		b.set(0,result_subblock[1]);
+		b.set(1,result_subblock[2]);
+		b.set(2,result_subblock[3]);
+		b.set(3,result_subblock[4]);
+
+		unsigned long column_index = b.to_ulong();
+
+		int s_block_result = s_blocks[i * 64 + column_index * 16 + row_index];
+		bitset<4> current_subblock(s_block_result);
+
+		for (int j = 0; j < 4; j++) {
+			result.set(i * 4 + j, current_subblock[j]);
+		}	
+	}
+
+	return s_permutation(result);
 }
 
 std::string des::encode(const std::string& input) {
@@ -83,6 +131,22 @@ bitset<BLOCK_SIZE_64> des::initial_permutation(const bitset<BLOCK_SIZE_64>& bloc
 	bitset<BLOCK_SIZE_64> result;
 	for (int i = 0; i < BLOCK_SIZE_64; i++) {
 		result.set(i, block[initial_permutations[i] - 1]);
+	}
+	return result;
+}
+
+bitset<BLOCK_SIZE_32> des::s_permutation(const bitset<BLOCK_SIZE_32>& block) {
+	bitset<BLOCK_SIZE_32> result;
+	for (int i = 0; i < BLOCK_SIZE_32; i++) {
+		result.set(i, block[s_block_permutation[i] - 1]);
+	}
+	return result;
+}
+
+bitset<BLOCK_SIZE_64> des::inverse_permutation(const bitset<BLOCK_SIZE_64>& block) {
+	bitset<BLOCK_SIZE_64> result;
+	for (int i = 0; i < BLOCK_SIZE_64; i++) {
+		result.set(i, block[inverse_p[i] - 1]);
 	}
 	return result;
 }

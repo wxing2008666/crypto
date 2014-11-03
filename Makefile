@@ -13,4 +13,4 @@ des.o: des.cpp
 	g++ $(FLAGS) des.cpp
 
 clean:
-	rm -rf *.o
+	rm -rf *.o execute
