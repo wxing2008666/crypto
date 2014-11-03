@@ -35,6 +35,7 @@ int main() {
 			d.convert_key(key);
 			std::string encoded = d.encode(input);
 			std::cout << "Encoded string : "<< encoded << std::endl;
+			std::cout << "Decoded string : "<< d.decode(encoded) << std::endl;
 		#endif
 	}
 	return 0;

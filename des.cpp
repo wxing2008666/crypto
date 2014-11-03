@@ -1,12 +1,13 @@
 #include "des.h"
 
-#define DEBUG
+// #define DEBUG
 
 inline bool shift(char ch, int count) {
 	return (ch >> count) & 1;
 }
 
 std::string des::calculating(const std::string& input, bool is_encode) {
+	blocks.clear();
 	split_input_string(input);
 	std::string result;
 
@@ -41,13 +42,29 @@ std::string des::calculating(const std::string& input, bool is_encode) {
 		// Feistel conversion cycles
 		for (int i = 0; i < 16; i++) {
 			// Left cyclic shift
-			LKi = LKi << encode_shifts[i] | LKi>>(BLOCK_SIZE_28 - encode_shifts[i]);
-			RKi = RKi << encode_shifts[i] | RKi>>(BLOCK_SIZE_28 - encode_shifts[i]);
+			if(is_encode) {
+				LKi = LKi << encode_shifts[i] | LKi>>(BLOCK_SIZE_28 - encode_shifts[i]);
+				RKi = RKi << encode_shifts[i] | RKi>>(BLOCK_SIZE_28 - encode_shifts[i]);	
+			} else {
+				LKi = LKi >> decode_shifts[i] | LKi << (BLOCK_SIZE_28 - decode_shifts[i]);
+				RKi = RKi >> decode_shifts[i] | RKi << (BLOCK_SIZE_28 - decode_shifts[i]);	
+			}
 
 			bitset<BLOCK_SIZE_48> key_i = get_key(LKi, RKi);
-			bitset<BLOCK_SIZE_32> e_func = expansion_func(R_part, key_i);
+			cout << "LKi = " << LKi.to_string() << endl;
+			bitset<BLOCK_SIZE_32> e_func = (is_encode) ? expansion_func(R_part, key_i) : expansion_func(L_part, key_i);
 
-			L_part = L_part^=e_func;				
+			bitset<BLOCK_SIZE_32> local_R_part, local_L_part;
+			if(is_encode) {
+				local_L_part = R_part;
+				local_R_part = L_part ^= e_func;
+			} else {
+				local_L_part = R_part ^= e_func;
+				local_R_part = L_part;
+			}
+
+			R_part = local_R_part;
+			L_part = local_L_part;				
 		}
 		for (int j = 0; j < BLOCK_SIZE_32; j++) {
 			current_block.set(j, L_part[j]);
@@ -56,7 +73,6 @@ std::string des::calculating(const std::string& input, bool is_encode) {
 		current_block = inverse_permutation(current_block);
 		result += to_std_string(current_block);
 	}
-
 	return result;
 }
 bitset<BLOCK_SIZE_48> des::get_key(bitset<BLOCK_SIZE_28> LKi, bitset<BLOCK_SIZE_28> RKi) {
@@ -124,7 +140,7 @@ std::string des::encode(const std::string& input) {
 }
 
 std::string des::decode(const std::string& input) {
-	return "";
+	return calculating(input, false);
 }
 
 bitset<BLOCK_SIZE_64> des::initial_permutation(const bitset<BLOCK_SIZE_64>& block) {
