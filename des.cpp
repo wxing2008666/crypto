@@ -51,7 +51,7 @@ std::string des::calculating(const std::string& input, bool is_encode) {
 			}
 
 			bitset<BLOCK_SIZE_48> key_i = get_key(LKi, RKi);
-			cout << "LKi = " << LKi.to_string() << endl;
+			// cout << "LKi = " << LKi.to_string() << endl;
 			bitset<BLOCK_SIZE_32> e_func = (is_encode) ? expansion_func(R_part, key_i) : expansion_func(L_part, key_i);
 
 			bitset<BLOCK_SIZE_32> local_R_part, local_L_part;
@@ -200,7 +200,7 @@ void des::split_input_string(const std::string& input) {
 	if(need_complete_last_block) {
 		int i = 0;
 		bitset<BLOCK_SIZE_64> block;
-		for (int j = blocks_count * 8; j < input.size(); j++, i++) {
+		for (int j = blocks_count * 8; j < (int)input.size(); j++, i++) {
 			char ch = input.at(j);
 			for (int k = 1; k <= 8; k++) {			
 				block.set((i+1) * 8 - k, shift(ch, k -1 ));
@@ -226,3 +226,4 @@ std::string des::to_std_string(const bitset<BLOCK_SIZE_64>& block) {
 	}
 	return result;
 }
+

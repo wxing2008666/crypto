@@ -23,10 +23,14 @@ public:
 	virtual std::string encode(const std::string& input) override;
 	virtual std::string decode(const std::string& input) override;
 
+	double get_H() const;
+	double get_C() const;
+
 protected:
 	void calculate_frequency(const std::string& input);
 	void change_bytecode(std::vector<unit>& v, char byte);
 	void current_tree_state(const std::vector<std::vector<unit>>& tree);
+
 
 	std::vector<unit> m_alphabet;
 	std::vector<unit> codes;

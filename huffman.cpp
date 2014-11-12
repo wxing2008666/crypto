@@ -1,17 +1,18 @@
 #include <string>
 #include "huffman.h"
+#include <cmath>
 
 #define DEBUG
 
-inline double get_total_freq(std::vector<unit> v) {
+static inline double get_total_freq(const std::vector<unit>& v) {
 	double total_freq = 0;
-	for(auto elem: v) {
+	for(auto& elem: v) {
 		total_freq += elem.frequency;
 	}
 	return total_freq;
 }
 
-inline double comparator(std::vector<unit> a, std::vector<unit> b) {
+static inline double comparator(const std::vector<unit>& a, const std::vector<unit>& b) {
 	return get_total_freq(a) > get_total_freq(b);
 }
 
@@ -37,6 +38,7 @@ std::string huffman::encode(const std::string& input) {
 		tree.pop_back();
 		auto before_back = tree.back(); 
 		tree.pop_back();
+
 		// append to all units of last tree element byte "1"
 		change_bytecode(back, '1');
 		// append to all units of tree element before last byte "0"
@@ -49,14 +51,17 @@ std::string huffman::encode(const std::string& input) {
 			current_tree_state(tree);
 		#endif
 
-		if((get_total_freq(back) + get_total_freq(before_back)) >= 1) break; 
+		if((get_total_freq(back)) == 1)	break;	
 	}
+	cout << "Step 1" << endl;
 
 	#ifdef DEBUG
-		for(auto unit: tree.at(0)) {
+		for(auto& unit: tree.at(0)) {
 			cout << unit.symbol << " = " << unit.bytecode << endl;
 		}
 	#endif
+	cout << "Step 2" << endl;
+
 
 	//get list of codes
 	codes.insert(codes.begin(), tree.at(0).begin(), tree.at(0).end());
@@ -113,7 +118,7 @@ std::string huffman::decode(const std::string& input) {
 }
 
 
-inline double accuracy(double val, int accuracy) {
+static inline double accuracy(double val, int accuracy) {
 	double grid = pow(0.1, accuracy);
 	return floor(val / grid + 0.5) * grid;
 }
@@ -128,4 +133,23 @@ void huffman::calculate_frequency(const std::string& input) {
 			m_alphabet.push_back({sym, accuracy(freq, 4)});
 		}
 	);
+	double total_freq = get_total_freq(m_alphabet);
+	if(total_freq < 1.0) {
+		m_alphabet[m_alphabet.size() - 1].frequency += 1.0 - total_freq;
+	}
+}
+double huffman::get_H() const {
+	double H = 0;
+	for (size_t i = 0; i < m_alphabet.size(); ++i) {
+		H += m_alphabet[i].frequency * (log(m_alphabet[i].frequency)/log(2));
+	}
+	return -H;
+}
+
+double huffman::get_C() const {
+	double C = 0;
+	for (size_t i = 0; i < codes.size(); ++i) {
+		C += codes[i].frequency * abs(codes[i].bytecode.size());
+	}
+	return C;
 }

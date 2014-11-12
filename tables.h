@@ -1,14 +1,6 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
-extern const int array[];
-#ifdef __cplusplus
-}
-#endif
-
 namespace permutations {
 
-	const int initial_permutations[] = { 
+	static const int initial_permutations[] = { 
 		58, 50, 42, 34, 26, 18, 10, 2, 
 		60, 52, 44, 36, 28, 20, 12, 4, 
 		62, 54, 46, 38, 30, 22, 14, 6, 
@@ -19,7 +11,7 @@ namespace permutations {
 		63, 55, 47, 39, 31, 23, 15, 7
 	};
 
-	const int extension_table[] = { 
+	static const int extension_table[] = { 
 		32, 1, 2, 3, 4, 5, 4, 5, 
 		6, 7, 8, 9, 8, 9, 10, 11,
 		12, 13, 12, 13, 14, 15, 16, 17,
@@ -28,7 +20,7 @@ namespace permutations {
 		28, 29, 28, 29, 30, 31, 32, 1 
 	};
 
-	const int inverse_p[] = { 
+	static const int inverse_p[] = { 
 		40, 8, 48, 16, 56, 24, 64, 32, 
 		39, 7, 47, 15, 55, 23, 63, 31, 
 		38, 6, 46, 14, 54, 22, 62, 30, 
@@ -39,31 +31,31 @@ namespace permutations {
 		33, 1, 41, 9, 49, 17, 57, 25 
 	};
 
-	const int s_block_permutation[] = { 
+	static const int s_block_permutation[] = { 
 		16, 7, 20, 21, 29, 12, 28, 17, 
 		1, 15, 23, 26, 5, 18, 31, 10, 
 		2, 8, 24, 14, 32, 27, 3, 9, 
 		19, 13, 30, 6, 22, 11, 4, 25 
 	};
 
-	const int c0[] = { 
+	static const int c0[] = { 
 		57, 49, 41, 33, 25, 17, 9, 1, 
 		58, 50, 42, 34, 26, 18, 10, 2,
 		59, 51, 43, 35, 27, 19, 11, 3,
 		60, 52, 44, 36 
 	};
 
-	const int d0[] = { 
+	static const int d0[] = { 
 		63, 55, 47, 39, 31, 23, 15, 7,
 		62, 54, 46, 38, 30, 22, 14, 6, 
 		61, 53, 45, 37, 29, 21, 13, 5, 
 		28, 20, 12, 4 
 	};
 
-	const int encode_shifts[] = { 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1 };
-	const int decode_shifts[] = { 0, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1 };
+	static const int encode_shifts[] = { 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1 };
+	static const int decode_shifts[] = { 0, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1 };
 
-	const int ki_permutations[] = {
+	static const int ki_permutations[] = {
 		14, 17, 11, 24, 1, 5, 3, 28, 
 		15, 6, 21, 10, 23, 19, 12, 4, 
 		26, 8, 16, 7, 27, 20, 13, 2, 
@@ -73,7 +65,7 @@ namespace permutations {
 		36, 29, 32
 	};
 
-	const int s_blocks[] = {
+	static const int s_blocks[] = {
 		
 			14, 4, 13, 1, 2, 15, 11, 8, 
 			3, 10, 6, 12, 5, 9, 0, 7, 1, 
@@ -153,6 +145,5 @@ namespace permutations {
 			0, 6, 10, 13, 15, 3, 5, 8, 
 			2, 1, 14, 7, 4, 10, 8, 13, 
 			15, 12, 9, 0, 3, 5, 6, 11
-		
 	};
 }
