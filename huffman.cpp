@@ -53,15 +53,12 @@ std::string huffman::encode(const std::string& input) {
 
 		if((get_total_freq(back)) == 1)	break;	
 	}
-	cout << "Step 1" << endl;
 
 	#ifdef DEBUG
 		for(auto& unit: tree.at(0)) {
 			cout << unit.symbol << " = " << unit.bytecode << endl;
 		}
 	#endif
-	cout << "Step 2" << endl;
-
 
 	//get list of codes
 	codes.insert(codes.begin(), tree.at(0).begin(), tree.at(0).end());

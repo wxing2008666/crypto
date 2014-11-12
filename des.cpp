@@ -1,4 +1,7 @@
 #include "des.h"
+#include "tables.h"
+
+using namespace permutations;
 
 // #define DEBUG
 

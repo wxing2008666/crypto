@@ -2,10 +2,8 @@
 #include <bitset>
 #include <vector>
 #include "crypto.h"
-#include "tables.h"
 
 using namespace std;
-using namespace permutations;
 
 const int BLOCK_SIZE_64 = 64;
 const int BLOCK_SIZE_32 = 32;
