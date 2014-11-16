@@ -1,5 +1,6 @@
-#define HUFFMAN
+// #define HUFFMAN
 // #define DES
+#define GOST
 
 #include <iostream>
 
@@ -9,6 +10,10 @@
 
 #ifdef DES
 	#include "des.h"
+#endif
+
+#ifdef GOST
+	#include "gost.h"
 #endif
 
 using namespace std;
@@ -43,6 +48,17 @@ int main() {
 			} else {
 				cout << "Please use 64-bit key!"<< endl;
 			}
+		#endif
+
+		#ifdef GOST
+			std::string key;
+			cout << "Enter key :";
+			cin >> key;
+			gost g;
+			std::string encoded = g.encode(input);
+			std::cout << "Encoded string : "<< encoded << std::endl;
+			std::cout << "Decoded string : "<< g.decode(encoded) << std::endl;
+
 		#endif
 	}
 	return 0;
