@@ -52,9 +52,10 @@ int main() {
 
 		#ifdef GOST
 			std::string key;
-			cout << "Enter key :";
+			cout << "Enter key(256 bits) :";
 			cin >> key;
 			gost g;
+			g.set_key(key);
 			std::string encoded = g.encode(input);
 			std::cout << "Encoded string : "<< encoded << std::endl;
 			std::cout << "Decoded string : "<< g.decode(encoded) << std::endl;
