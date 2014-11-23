@@ -66,7 +66,7 @@ int main() {
 			std::cout << "Decoded string : "<< g.decode(encoded) << std::endl;
 		#endif
 
-		#ifdef GOST
+		#ifdef RSA
 			rsa r;
 			std::string encoded = r.encode(input);
 			std::cout << "Encoded string : "<< encoded << std::endl;

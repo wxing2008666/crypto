@@ -11,4 +11,7 @@ public:
 
 	virtual std::string encode(const std::string& input) override;
 	virtual std::string decode(const std::string& input) override;
+
+private:
+	bool is_prime(int digit);
 };
