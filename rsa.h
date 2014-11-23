@@ -26,7 +26,9 @@ private:
 
 	/* Methods */
 	bool is_prime(ul digit);
+	ul generate_prime();
 	ul gcd(ul first_digit, ul second_digit); 
 	ull euler_function(ul first_prime, ul second_prime);
-
+	ull modulo(ul first_prime, ul second_prime);
+	ul get_random_number();
 };
