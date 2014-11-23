@@ -26,6 +26,7 @@ private:
 
 	/* Methods */
 	bool is_prime(ul digit);
-	ul gdc(ul first_digit, ul second_digit); 
+	ul gcd(ul first_digit, ul second_digit); 
+	ull euler_function(ul first_prime, ul second_prime);
 
 };

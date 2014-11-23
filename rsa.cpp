@@ -25,6 +25,11 @@ bool rsa::is_prime(ul digit) {
 	return current_divisor == digit;
 }
 
-ul rsa::gdc(ul first_digit, ul second_digit) {
+// Recursive Euclid algorithm
+ul rsa::gcd(ul first_digit, ul second_digit) {
 	return (second_digit != 0) ? gcd(second_digit, first_digit % second_digit) : first_digit;
+}
+
+ull rsa::euler_function(ul first_prime, ul second_prime) {
+	return (first_prime - 1) * (second_prime - 1);
 }
