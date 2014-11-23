@@ -1,6 +1,7 @@
 // #define HUFFMAN
 // #define DES
-#define GOST
+// #define GOST
+#define RSA
 
 #include <iostream>
 
@@ -14,6 +15,10 @@
 
 #ifdef GOST
 	#include "gost.h"
+#endif
+
+#ifdef RSA
+	#include "rsa.h"
 #endif
 
 using namespace std;
@@ -59,7 +64,13 @@ int main() {
 			std::string encoded = g.encode(input);
 			std::cout << "Encoded string : "<< encoded << std::endl;
 			std::cout << "Decoded string : "<< g.decode(encoded) << std::endl;
+		#endif
 
+		#ifdef GOST
+			rsa r;
+			std::string encoded = r.encode(input);
+			std::cout << "Encoded string : "<< encoded << std::endl;
+			std::cout << "Decoded string : "<< r.decode(encoded) << std::endl;
 		#endif
 	}
 	return 0;

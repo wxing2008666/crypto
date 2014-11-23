@@ -1,7 +1,7 @@
 FLAGS = -std=c++11 -Wall -c
 
-all: gost.o huffman.o des.o main.o
-	g++ gost.o huffman.o des.o main.o -o execute
+all: rsa.o gost.o huffman.o des.o main.o
+	g++ rsa.o gost.o huffman.o des.o main.o -o execute
 
 main.o: main.cpp
 	g++ $(FLAGS) main.cpp
@@ -14,6 +14,9 @@ des.o: des.cpp
 
 gost.o: gost.cpp
 	g++ $(FLAGS) gost.cpp
+
+rsa.o: rsa.cpp
+	g++ $(FLAGS) rsa.cpp
 
 clean:
 	rm -rf *.o execute
