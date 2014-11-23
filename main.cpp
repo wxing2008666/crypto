@@ -68,6 +68,7 @@ int main() {
 
 		#ifdef RSA
 			rsa r;
+			r.generate_keys();
 			std::string encoded = r.encode(input);
 			std::cout << "Encoded string : "<< encoded << std::endl;
 			std::cout << "Decoded string : "<< r.decode(encoded) << std::endl;

@@ -17,6 +17,7 @@ public:
 
 	virtual std::string encode(const std::string& input) override;
 	virtual std::string decode(const std::string& input) override;
+	void generate_keys();
 
 private:
 	/* Variables */
@@ -30,10 +31,10 @@ private:
 	/* Methods */
 	bool is_prime(ul digit);
 	ul generate_prime();
-	ul gcd(ul first_digit, ul second_digit); 
+	ul gcd_extend(ul first_digit, ul second_digit); 
 	ull euler_function(ul first_prime, ul second_prime);
 	ull module(ul first_prime, ul second_prime);
-	ull secret_exponent(ull e_key, ull euler);
 	ul get_random_number();
-	void generate_keys();
+
+	ull crypt(ull msg, ull key, ull pkey);
 };

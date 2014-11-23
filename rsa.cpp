@@ -2,11 +2,14 @@
 #include <ctime>
 #include <random>
 #include <chrono>
+#include <string>
 
 #define DEBUG
-#define DEBUG_PRIME
-const ull LEFTBOARD = 1000;
-const ull RIGHTBOARD = 1000000000;
+// #define DEBUG_PRIME
+
+/* Constants */
+const ull LEFTBOARD = 100000;
+const ull RIGHTBOARD = 1000000;
 // const ull RIGHTBOARD = 1000000;
 
 std::string rsa::encode(const std::string& input) {
@@ -21,14 +24,27 @@ std::string rsa::encode(const std::string& input) {
 		}
 	#endif
 
-	// Generate all keys
-	generate_keys();
+	ull converted_str = std::stoi(input);
+	cout << "Converted to ull : "<< converted_str << endl;
+	ull encoded = crypt(converted_str, m_e_key, m_module);
+	return std::to_string(encoded);
+}
 
-	return input;
+std::string rsa::decode(const std::string& input) {
+	ull converted_str = std::stoi(input);
+	cout << "Converted to ull : "<< converted_str << endl;
+	ull decoded = crypt(converted_str, m_d_key, m_module);
+	return std::to_string(decoded);
+}
+
+ull rsa::crypt(ull msg, ull key, ull pkey) {
+	// idea:
+	// 2^16 mod n = (((2 ^ 2 mod n)^2 mod n)^2 mod n)^2 mod n
+	return 123;
 }
 
 void rsa::generate_keys() {
-	cout << "Generate p and q..."
+	cout << "Generate p and q..." << endl;
 	m_p = generate_prime();
 	m_q = generate_prime();
 
@@ -37,27 +53,33 @@ void rsa::generate_keys() {
 	cout << "Module: " << m_module << endl;
 	m_euler = euler_function(m_p, m_q);
 	cout << "Euler function: " << m_euler << endl;
-	m_d_key = secret_exponent(m_e_key, m_euler);
+	m_d_key = gcd_extend(m_e_key, m_euler);
 	cout << "Secret exponent: " << m_d_key << endl;
 	cout << "Public exponent: " << m_e_key << endl;
 }
 
-std::string rsa::decode(const std::string& input) {
-	return input;
-}
 
 bool rsa::is_prime(ul digit) {
 	ul current_divisor = 2;
 	// check if digit has divisors
 	while(current_divisor < digit) {
-	    if((digit % current_divisor++) == 0) break;
+	    if(!(digit % current_divisor++)) break;
 	}
 	return current_divisor == digit;
 }
 
-// Recursive Euclid algorithm
-ul rsa::gcd(ul first_digit, ul second_digit) {
-	return (second_digit != 0) ? gcd(second_digit, first_digit % second_digit) : first_digit;
+// Extended Euclid algorithm
+ul rsa::gcd_extend(ul first_digit, ul second_digit) {
+	int b0 = second_digit, t, q;
+	int x0 = 0, x1 = 1;
+	if (second_digit == 1) return 1;
+	while (first_digit > 1) {
+		q = first_digit / second_digit;
+		t = second_digit, second_digit = first_digit % second_digit, first_digit = t;
+		t = x0, x0 = x1 - q * x0, x1 = t;
+	}
+	if (x1 < 0) x1 += b0;
+	return x1;
 }
 
 ull rsa::euler_function(ul first_prime, ul second_prime) {
@@ -82,14 +104,4 @@ ul rsa::get_random_number() {
     std::mt19937 generator(random_device());
     std::uniform_int_distribution<ul> distribution(LEFTBOARD, RIGHTBOARD);
     return distribution(generator);
-}
-
-ull rsa::secret_exponent(ull e_key, ull euler) {
-	ul dkey = euler / e_key;
-	while(true) {
-		if(((dkey * e_key) % euler ) == 1) 
-			break
-		else dkey++;
-	}
-	return dkey;
 }
