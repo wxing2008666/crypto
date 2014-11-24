@@ -512,4 +512,57 @@ BigInteger BigInteger::power(BigInteger b, BigInteger m) {
 	return (b % 2 == 1) ? (a * t) % m : t;	
 }
 
+BigInteger BigInteger::gcd1(BigInteger a, BigInteger b) {
+	if (a == 0)
+		return b;
+	return gcd1(b % a, a);
+}
+
+BigInteger BigInteger::gcd(BigInteger b) {
+	BigInteger a(number);
+	return gcd1(a.absolute(), b.absolute());
+}
+
+bool BigInteger::miller_rabin(BigInteger n) {
+	BigInteger b(2);
+	BigInteger one(1);
+
+	if (n == 2)
+		return true;
+	if (n < 2 || (n % 2 == 0))
+		return false;
+
+	 if (b < 2)
+		b = 2;
+	for (BigInteger g = n.gcd(b); g != one; ++b)
+		if (n > g)
+			return false;
+
+	BigInteger n_1 = n;
+	--n_1;
+	BigInteger p, q;
+	q = 0;
+	while (n_1 % 2 == 0) {
+		++q;
+		n_1 /= 2;
+	}
+	p = n_1;
+
+	BigInteger rem = b.power (q, n);
+	if (rem == 1 || rem == n_1)
+		return true;
+
+	for (BigInteger i = 1; i < p; i++) {
+		rem = (rem * rem) % n;
+		if (rem == n_1)
+			return true;
+	}
+	return false;
+}
+
+bool BigInteger::is_prime() {
+	BigInteger currentDigit(number);
+	return miller_rabin(currentDigit);
+} 
+
 #endif

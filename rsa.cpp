@@ -68,9 +68,9 @@ void rsa::generate_keys() {
 bool rsa::is_prime(BigInteger digit) {
 	BigInteger current_divisor = 2;
 	// check if digit has divisors
-	while(current_divisor < digit) {
-	    if(!(digit % current_divisor++)) break;
-	}
+	// while(current_divisor < digit) {
+	//     if(!(digit % current_divisor++)) break;
+	// }
 	return current_divisor == digit;
 }
 
@@ -103,7 +103,7 @@ BigInteger rsa::generate_prime() {
 
 	while(true) {
 	    prime = get_random_number(leftBoard, rightBoard);
-	    if(is_prime(prime)) break;
+	    if(prime.is_prime()) break;
 	}
 	return prime;
 }

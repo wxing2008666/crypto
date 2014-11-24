@@ -47,6 +47,10 @@ public:
 	BigInteger power(BigInteger b); // current ^ b
 	BigInteger power(BigInteger b, BigInteger m); // current ^ b % mod m
 
+	bool is_prime(); 
+	BigInteger gcd(BigInteger b); // gcd(current, b)
+
+
 	operator string(); // for conversion from BigInteger to string
 private:
 	bool equals(BigInteger n1, BigInteger n2);
@@ -58,5 +62,7 @@ private:
 	pair<string, long long> divide(string n, long long den);
 	string toString(long long n);
 	long long toInt(string s);
+	bool miller_rabin(BigInteger n);
+	BigInteger gcd1(BigInteger a, BigInteger b);
 };
 
