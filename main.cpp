@@ -1,7 +1,7 @@
 // #define HUFFMAN
 // #define DES
-// #define GOST
-#define RSA
+#define GOST
+// #define RSA
 
 #include <iostream>
 

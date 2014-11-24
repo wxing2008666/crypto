@@ -8,8 +8,8 @@
 // #define DEBUG_PRIME
 
 /* Constants */
-const ull LEFTBOARD = 100000;
-const ull RIGHTBOARD = 1000000;
+const ull LEFTBOARD = 10000;
+const ull RIGHTBOARD = 100000;
 // const ull RIGHTBOARD = 1000000;
 
 std::string rsa::encode(const std::string& input) {
@@ -24,30 +24,59 @@ std::string rsa::encode(const std::string& input) {
 		}
 	#endif
 
-	ull converted_str = std::stoi(input);
-	cout << "Converted to ull : "<< converted_str << endl;
+	ull converted_str = std::stoull(input);
 	ull encoded = crypt(converted_str, m_e_key, m_module);
 	return std::to_string(encoded);
 }
 
 std::string rsa::decode(const std::string& input) {
-	ull converted_str = std::stoi(input);
-	cout << "Converted to ull : "<< converted_str << endl;
+	ull converted_str = std::stoull(input);
 	ull decoded = crypt(converted_str, m_d_key, m_module);
 	return std::to_string(decoded);
 }
+vector<int> rsa::get_multipliers(ull key) {
+	std::vector<int> multipliers;
+	ul i = 2;
+	 
 
-ull rsa::crypt(ull msg, ull key, ull pkey) {
+	while(i <= key) {
+		if((key % 2) != 0) {
+			multipliers.push_back(1);
+			key -= 1;
+			continue;
+		}
+		if((key % i) == 0) {
+			multipliers.push_back(i);
+			key = key / i;
+		} else {
+			i = i + 1;		
+		}
+	}
+
+
+	return multipliers;
+}
+
+ull rsa::crypt(ull msg, ul key, ul pkey) {
 	// idea:
 	// 2^16 mod n = (((2 ^ 2 mod n)^2 mod n)^2 mod n)^2 mod n
-	return 123;
+
+	ul converted_message = 0;
+	while (key) {
+		if (key & 1)
+			converted_message = (converted_message * msg) % pkey;
+		key >>= 1; //divide by 2
+		msg = (msg * msg) % pkey;
+		cout << "Key: " << key << " Msg: " << msg << " CM: " << converted_message <<endl;
+	}
+	return converted_message;
 }
 
 void rsa::generate_keys() {
+	cout << "====================================" << endl;
 	cout << "Generate p and q..." << endl;
 	m_p = generate_prime();
 	m_q = generate_prime();
-
 	cout << "p = " << m_p << ", q = " << m_q << endl;
 	m_module = module(m_p, m_q);
 	cout << "Module: " << m_module << endl;
@@ -56,6 +85,8 @@ void rsa::generate_keys() {
 	m_d_key = gcd_extend(m_e_key, m_euler);
 	cout << "Secret exponent: " << m_d_key << endl;
 	cout << "Public exponent: " << m_e_key << endl;
+	cout << "====================================" << endl;
+
 }
 
 

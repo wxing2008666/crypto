@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "crypto.h"
+#include <vector>
 using namespace std;
 
 typedef unsigned long ul;
@@ -36,5 +37,7 @@ private:
 	ull module(ul first_prime, ul second_prime);
 	ul get_random_number();
 
-	ull crypt(ull msg, ull key, ull pkey);
+	ull crypt(ull msg, ul key, ul pkey);
+	vector<int> get_multipliers(ull key);
+
 };
