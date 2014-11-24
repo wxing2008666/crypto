@@ -1,4 +1,4 @@
-FLAGS = -std=c++11 -Wall -c
+FLAGS = -std=c++11 -Wall -c -g
 
 all: bigint.o rsa.o gost.o huffman.o des.o main.o
 	g++ bigint.o rsa.o gost.o huffman.o des.o main.o -o execute

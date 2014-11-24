@@ -16,9 +16,10 @@ std::string rsa::encode(const std::string& input) {
 
 	// Test bigint 
 	BigInteger A("123123123123123123123123123123123123123123123123123123123123123123123123");
-	BigInteger B("123123123123123123123123123123123123123123123123123123123123123123123123");
+	BigInteger B("10");
 	BigInteger C = A + B;
 	cout << "C = " << C.power(10) << endl; 
+	cout << "B ^ 10 " << B.power(10) << endl;
 
 
 	BigInteger converted_str = input;
@@ -50,17 +51,17 @@ BigInteger rsa::crypt(BigInteger msg, BigInteger key, BigInteger pkey) {
 void rsa::generate_keys() {
 	cout << "====================================" << endl;
 	cout << "Generate p and q..." << endl;
-	m_p = generate_prime();
-	m_q = generate_prime();
-	cout << "p = " << m_p << ", q = " << m_q << endl;
-	m_module = module(m_p, m_q);
-	cout << "Module: " << m_module << endl;
-	m_euler = euler_function(m_p, m_q);
-	cout << "Euler function: " << m_euler << endl;
-	m_d_key = gcd_extend(m_e_key, m_euler);
-	cout << "Secret exponent: " << m_d_key << endl;
-	cout << "Public exponent: " << m_e_key << endl;
-	cout << "====================================" << endl;
+	// m_p = generate_prime();
+	// m_q = generate_prime();
+	// cout << "p = " << m_p << ", q = " << m_q << endl;
+	// m_module = module(m_p, m_q);
+	// cout << "Module: " << m_module << endl;
+	// m_euler = euler_function(m_p, m_q);
+	// cout << "Euler function: " << m_euler << endl;
+	// m_d_key = gcd_extend(m_e_key, m_euler);
+	// cout << "Secret exponent: " << m_d_key << endl;
+	// cout << "Public exponent: " << m_e_key << endl;
+	// cout << "====================================" << endl;
 
 }
 
