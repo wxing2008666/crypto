@@ -21,6 +21,11 @@ std::string rsa::encode(const std::string& input) {
 	cout << "C = " << C.power(10) << endl; 
 	cout << "B ^ 10 " << B.power(10) << endl;
 
+	for (int i = LEFTBOARD; i < RIGHTBOARD; ++i) {
+		BigInteger current(i);
+		cout << "if "<< current << " prime? = " << current.is_prime() << endl;
+	}
+
 
 	BigInteger converted_str = input;
 	BigInteger encoded = crypt(converted_str, m_e_key, m_module);
@@ -51,7 +56,7 @@ BigInteger rsa::crypt(BigInteger msg, BigInteger key, BigInteger pkey) {
 void rsa::generate_keys() {
 	cout << "====================================" << endl;
 	cout << "Generate p and q..." << endl;
-	// m_p = generate_prime();
+	m_p = generate_prime();
 	// m_q = generate_prime();
 	// cout << "p = " << m_p << ", q = " << m_q << endl;
 	// m_module = module(m_p, m_q);
@@ -102,10 +107,13 @@ BigInteger rsa::generate_prime() {
 	BigInteger leftBoard = prime.power(100);
 	BigInteger rightBoard = prime.power(200);
 
-	while(true) {
-	    prime = get_random_number(leftBoard, rightBoard);
-	    if(prime.is_prime()) break;
-	}
+	cout << "L = " << leftBoard << endl;
+	cout << "R = " << rightBoard << endl;
+
+	// while(true) {
+	//     prime = get_random_number(leftBoard, rightBoard);
+	//     if(prime.is_prime()) break;
+	// }
 	return prime;
 }
 
