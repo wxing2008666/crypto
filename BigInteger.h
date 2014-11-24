@@ -41,6 +41,12 @@ public:
 	BigInteger& operator %= (BigInteger b);
 	BigInteger& operator [] (int n);
 	BigInteger operator -(); // unary minus sign
+
+	friend ostream& operator << (ostream& stream, BigInteger X);
+	BigInteger power(int b); // current ^ b
+	BigInteger power(BigInteger b); // current ^ b
+	BigInteger power(BigInteger b, BigInteger m); // current ^ b % mod m
+
 	operator string(); // for conversion from BigInteger to string
 private:
 	bool equals(BigInteger n1, BigInteger n2);

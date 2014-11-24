@@ -23,22 +23,21 @@ public:
 
 private:
 	/* Variables */
-	ul m_p; // 32-bit prime digit p
-	ul m_q; // 32-bit prime digit q
-	ull m_module; // module
-	ull m_euler; // Euler function result
-	ull m_e_key; // public exponent
-	ull m_d_key; // secret exponent
+	BigInteger m_p; // 32-bit prime digit p
+	BigInteger m_q; // 32-bit prime digit q
+	BigInteger m_module; // module
+	BigInteger m_euler; // Euler function result
+	BigInteger m_e_key; // public exponent
+	BigInteger m_d_key; // secret exponent
 
 	/* Methods */
-	bool is_prime(ul digit);
-	ul generate_prime();
-	ul gcd_extend(ul first_digit, ul second_digit); 
-	ull euler_function(ul first_prime, ul second_prime);
-	ull module(ul first_prime, ul second_prime);
-	ul get_random_number();
+	bool is_prime(BigInteger digit);
+	BigInteger generate_prime();
+	BigInteger gcd_extend(BigInteger first_digit, BigInteger second_digit); 
+	BigInteger euler_function(BigInteger first_prime, BigInteger second_prime);
+	BigInteger module(BigInteger first_prime, BigInteger second_prime);
+	BigInteger get_random_number(BigInteger leftBoard, BigInteger rightBoard);
 
-	ull crypt(ull msg, ul key, ul pkey);
-	vector<int> get_multipliers(ull key);
+	BigInteger crypt(BigInteger msg, BigInteger key, BigInteger pkey);
 
 };

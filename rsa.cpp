@@ -18,54 +18,32 @@ std::string rsa::encode(const std::string& input) {
 	BigInteger A("123123123123123123123123123123123123123123123123123123123123123123123123");
 	BigInteger B("123123123123123123123123123123123123123123123123123123123123123123123123");
 	BigInteger C = A + B;
-	cout << "C = " << (string)C << endl; 
+	cout << "C = " << C.power(10) << endl; 
 
 
-	ull converted_str = std::stoull(input);
-	ull encoded = crypt(converted_str, m_e_key, m_module);
-	return std::to_string(encoded);
+	BigInteger converted_str = input;
+	BigInteger encoded = crypt(converted_str, m_e_key, m_module);
+	return (string) encoded;
 }
 
 std::string rsa::decode(const std::string& input) {
-	ull converted_str = std::stoull(input);
-	ull decoded = crypt(converted_str, m_d_key, m_module);
-	return std::to_string(decoded);
-}
-vector<int> rsa::get_multipliers(ull key) {
-	std::vector<int> multipliers;
-	ul i = 2;
-	 
-
-	while(i <= key) {
-		if((key % 2) != 0) {
-			multipliers.push_back(1);
-			key -= 1;
-			continue;
-		}
-		if((key % i) == 0) {
-			multipliers.push_back(i);
-			key = key / i;
-		} else {
-			i = i + 1;		
-		}
-	}
-
-
-	return multipliers;
+	BigInteger converted_str = input;
+	BigInteger decoded = crypt(converted_str, m_d_key, m_module);
+	return (string) decoded;
 }
 
-ull rsa::crypt(ull msg, ul key, ul pkey) {
+BigInteger rsa::crypt(BigInteger msg, BigInteger key, BigInteger pkey) {
 	// idea:
 	// 2^16 mod n = (((2 ^ 2 mod n)^2 mod n)^2 mod n)^2 mod n
 
 	ul converted_message = 0;
-	while (key) {
-		if (key & 1)
-			converted_message = (converted_message * msg) % pkey;
-		key >>= 1; //divide by 2
-		msg = (msg * msg) % pkey;
-		cout << "Key: " << key << " Msg: " << msg << " CM: " << converted_message <<endl;
-	}
+	// while (key) {
+	// 	if (key & 1)
+	// 		converted_message = (converted_message * msg) % pkey;
+	// 	key >>= 1; //divide by 2
+	// 	msg = (msg * msg) % pkey;
+	// 	cout << "Key: " << key << " Msg: " << msg << " CM: " << converted_message <<endl;
+	// }
 	return converted_message;
 }
 
@@ -87,8 +65,8 @@ void rsa::generate_keys() {
 }
 
 
-bool rsa::is_prime(ul digit) {
-	ul current_divisor = 2;
+bool rsa::is_prime(BigInteger digit) {
+	BigInteger current_divisor = 2;
 	// check if digit has divisors
 	while(current_divisor < digit) {
 	    if(!(digit % current_divisor++)) break;
@@ -97,9 +75,9 @@ bool rsa::is_prime(ul digit) {
 }
 
 // Extended Euclid algorithm
-ul rsa::gcd_extend(ul first_digit, ul second_digit) {
-	int b0 = second_digit, t, q;
-	int x0 = 0, x1 = 1;
+BigInteger rsa::gcd_extend(BigInteger first_digit, BigInteger second_digit) {
+	BigInteger b0 = second_digit, t, q;
+	BigInteger x0 = 0, x1 = 1;
 	if (second_digit == 1) return 1;
 	while (first_digit > 1) {
 		q = first_digit / second_digit;
@@ -110,26 +88,33 @@ ul rsa::gcd_extend(ul first_digit, ul second_digit) {
 	return x1;
 }
 
-ull rsa::euler_function(ul first_prime, ul second_prime) {
+BigInteger rsa::euler_function(BigInteger first_prime, BigInteger second_prime) {
 	return (first_prime - 1) * (second_prime - 1);
 }
 
-ull rsa::module(ul first_prime, ul second_prime) {
+BigInteger rsa::module(BigInteger first_prime, BigInteger second_prime) {
 	return first_prime * second_prime;
 }
 
-ul rsa::generate_prime() {
-	ul prime = 2;
+BigInteger rsa::generate_prime() {
+	BigInteger prime = 2;
+	BigInteger leftBoard = prime.power(100);
+	BigInteger rightBoard = prime.power(200);
+
 	while(true) {
-	    prime = get_random_number();
+	    prime = get_random_number(leftBoard, rightBoard);
 	    if(is_prime(prime)) break;
 	}
 	return prime;
 }
 
-ul rsa::get_random_number() {
+BigInteger rsa::get_random_number(BigInteger leftBoard, BigInteger rightBoard) {
+
 	std::random_device random_device;
     std::mt19937 generator(random_device());
-    std::uniform_int_distribution<ul> distribution(LEFTBOARD, RIGHTBOARD);
-    return distribution(generator);
+	std::uniform_int_distribution<ull> distribution(0, std::numeric_limits<ull>::max());
+	BigInteger part = (rightBoard - leftBoard) / std::numeric_limits<ull>::max();
+	BigInteger newL = leftBoard + part * distribution(generator);
+	BigInteger newR = newL + part;
+	return get_random_number(newL , newR);
 }

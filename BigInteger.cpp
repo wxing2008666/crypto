@@ -477,4 +477,39 @@ long long BigInteger::toInt(string s)
 	return sum;
 }
 
+
+ostream& operator << (ostream& stream, BigInteger X) {
+	stream << (string)X;
+	return stream;
+}
+
+BigInteger BigInteger::power(int b) {
+	BigInteger a(number);
+	if (b == 0LL) return 1;
+	if (b == 1LL) return a;
+	int k = b / 2;
+	BigInteger t = power(k);
+	t = (t * t);
+	return (b % 2 == 1) ? (a * t) : t;
+}
+
+BigInteger BigInteger::power(BigInteger b) {
+	BigInteger a(number);
+ 	if (b == 0) return 1;
+	if (b == 1) return a;
+	BigInteger k = b / 2, t = power(k);
+	t = (t * t);
+	return (b % 2 == 1) ? (a * t) : t;
+}
+
+BigInteger BigInteger::power(BigInteger b, BigInteger m) {
+	BigInteger a(number);
+ 	if (b == 0) return 1;
+	if (b == 1) return a;
+	if (a > m) a = a % m;
+	BigInteger k = b / 2, t = power(k, m) % m;
+	t = (t * t) % m;
+	return (b % 2 == 1) ? (a * t) % m : t;	
+}
+
 #endif
