@@ -2,6 +2,7 @@
 #include <string>
 #include "crypto.h"
 #include <vector>
+#include "BigInteger.h"
 using namespace std;
 
 typedef unsigned long ul;

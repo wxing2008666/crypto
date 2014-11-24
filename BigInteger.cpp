@@ -471,7 +471,7 @@ long long BigInteger::toInt(string s)
 {
 	long long sum = 0;
 
-	for(int i=0; i<s.length(); i++)
+	for(size_t i=0; i < s.length(); i++)
 		sum = (sum*10) + (s[i] - '0');
 
 	return sum;

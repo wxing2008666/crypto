@@ -24,6 +24,13 @@ std::string rsa::encode(const std::string& input) {
 		}
 	#endif
 
+	// Test bigint 
+	BigInteger A("123123");
+	BigInteger B("123123");
+	BigInteger C = A + B;
+	cout << "C = " << (string)C << endl; 
+
+
 	ull converted_str = std::stoull(input);
 	ull encoded = crypt(converted_str, m_e_key, m_module);
 	return std::to_string(encoded);
