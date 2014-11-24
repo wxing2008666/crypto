@@ -14,19 +14,9 @@ const ull RIGHTBOARD = 100000;
 
 std::string rsa::encode(const std::string& input) {
 
-	#ifdef DEBUG_PRIME
-		// generate prime tests
-		for (int i = 0; i < 100; ++i) {
-			time_t start = time(NULL); 
-			ul prime = generate_prime();
-			time_t end = time(NULL);
-			cout << "Prime : " << prime << "; Time : " << end - start << " sec" << endl;
-		}
-	#endif
-
 	// Test bigint 
-	BigInteger A("123123");
-	BigInteger B("123123");
+	BigInteger A("123123123123123123123123123123123123123123123123123123123123123123123123");
+	BigInteger B("123123123123123123123123123123123123123123123123123123123123123123123123");
 	BigInteger C = A + B;
 	cout << "C = " << (string)C << endl; 
 
