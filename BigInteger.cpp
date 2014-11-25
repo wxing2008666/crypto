@@ -5,8 +5,12 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <bitset>
 #include "BigInteger.h"
+
+typedef unsigned long long ull;
 #define MAX 10000 // for strings
+#define KEY_SIZE 32
 
 BigInteger::BigInteger() // empty constructor initializes zero
 {
@@ -179,6 +183,11 @@ BigInteger BigInteger::operator + (BigInteger b)
 
 	return addition;
 }
+
+BigInteger BigInteger::operator + (int b) {
+	BigInteger second(b);
+	return (*this) + second;
+}
 //-------------------------------------------------------------
 BigInteger BigInteger::operator - (BigInteger b)
 {
@@ -197,6 +206,11 @@ BigInteger BigInteger::operator * (BigInteger b)
 		mul.setSign(false);
 
 	return mul;
+}
+
+BigInteger BigInteger::operator * (int b) {
+	BigInteger second(b);
+	return (*this) * second;
 }
 //-------------------------------------------------------------
 // Warning: Denomerator must be within "long long" size not "BigInteger"
@@ -502,6 +516,7 @@ BigInteger BigInteger::power(BigInteger b) {
 	return (b % 2 == 1) ? (a * t) : t;
 }
 
+// Extended Euclid algorithm
 BigInteger BigInteger::power(BigInteger b, BigInteger m) {
 	BigInteger a(number);
  	if (b == 0) return 1;
@@ -524,45 +539,88 @@ BigInteger BigInteger::gcd(BigInteger b) {
 }
 
 bool BigInteger::miller_rabin(BigInteger n) {
-	BigInteger b(2);
-	BigInteger one(1);
+	int k = 40; // rounds 
 
-	if (n == 2)
-		return true;
-	if (n < 2 || (n % 2 == 0))
-		return false;
+	if (n <= 1) return false;
+	if (n == 2 || n == 3) return true;
+    if (n % 2 == 0) return false;
+    if (n % 3 == 0) return false;
 
-	 if (b < 2)
-		b = 2;
-	for (BigInteger g = n.gcd(b); g != one; ++b)
-		if (n > g)
-			return false;
+    BigInteger zero = 0;
+    BigInteger s = 0, one = 1, d = n - one, two = 2;
+    while ((d % two) == zero) {
+        d /= two;
+        s++;
+    }
 
-	BigInteger n_1 = n;
-	--n_1;
-	BigInteger p, q;
-	q = 0;
-	while (n_1 % 2 == 0) {
-		++q;
-		n_1 /= 2;
-	}
-	p = n_1;
+    for (int i = 0; i < k; i++) {
+    	BigInteger a = random(two, n - one);
+    	// cout << "Random number on k = " << i << " is " << a << " [ n is " << n << "]" <<endl;
+        BigInteger x = a.power(d, n);
 
-	BigInteger rem = b.power (q, n);
-	if (rem == 1 || rem == n_1)
-		return true;
-
-	for (BigInteger i = 1; i < p; i++) {
-		rem = (rem * rem) % n;
-		if (rem == n_1)
-			return true;
-	}
-	return false;
+        if (x == one || x == n - one)
+            continue;
+        for (BigInteger j = 0; j < s - one; j++)
+        {
+            x = (x * x) % n;
+            if (x == one)
+                return false;
+            if (x == n - one)
+                break;
+        }
+        if (x != n - one)
+            return false;
+    }
+    return true;
 }
 
 bool BigInteger::is_prime() {
-	BigInteger currentDigit(number);
-	return miller_rabin(currentDigit);
+	return miller_rabin((*this));
 } 
+
+unsigned long long BigInteger::int_repr() {
+	return toInt(number);
+}
+
+BigInteger BigInteger::random(BigInteger leftBoard, BigInteger rightBoard) {
+
+	int key_size = rightBoard.getNumber().size();
+
+	std::random_device random_device;
+	std::mt19937 generator(random_device());
+
+	BigInteger number1024bit;
+	std::uniform_int_distribution<int> distribution(0, 1);
+	for (int i = 0; i < key_size; ++i) {
+		int part = distribution(generator);
+		BigInteger two = 2;
+		if(part == 1 && ((number1024bit + two.power(i) ) < rightBoard)) {
+			number1024bit += two.power(i);
+		}
+	}
+	// cout << key_size <<" bit number = " << number1024bit << endl;
+
+	return number1024bit;
+}
+
+
+BigInteger BigInteger::random(int key_size) {
+
+	std::random_device random_device;
+	std::mt19937 generator(random_device());
+
+	BigInteger number1024bit;
+	std::uniform_int_distribution<int> distribution(0, 1);
+	for (int i = 0; i < key_size; ++i) {
+		int part = distribution(generator);
+		BigInteger two = 2;
+		if(part == 1) {
+			number1024bit += two.power(i);
+		}
+	}
+	// cout << key_size <<" bit number = " << number1024bit << endl;
+
+	return number1024bit;
+}
 
 #endif

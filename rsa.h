@@ -31,12 +31,10 @@ private:
 	BigInteger m_d_key; // secret exponent
 
 	/* Methods */
-	bool is_prime(BigInteger digit);
 	BigInteger generate_prime();
 	BigInteger gcd_extend(BigInteger first_digit, BigInteger second_digit); 
 	BigInteger euler_function(BigInteger first_prime, BigInteger second_prime);
 	BigInteger module(BigInteger first_prime, BigInteger second_prime);
-	BigInteger get_random_number(BigInteger leftBoard, BigInteger rightBoard);
 
 	BigInteger crypt(BigInteger msg, BigInteger key, BigInteger pkey);
 

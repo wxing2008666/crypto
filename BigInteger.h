@@ -1,4 +1,7 @@
 #include <string>
+#include <ctime>
+#include <random>
+#include <chrono>
 #define MAX 10000 // for strings
 
 using namespace std;
@@ -30,8 +33,10 @@ public:
 	BigInteger& operator --(); // prefix
 	BigInteger  operator --(int); // postfix
 	BigInteger operator + (BigInteger b);
+	BigInteger operator + (int b);
 	BigInteger operator - (BigInteger b);
 	BigInteger operator * (BigInteger b);
+	BigInteger operator * (int b);
 	BigInteger operator / (BigInteger b);
 	BigInteger operator % (BigInteger b);
 	BigInteger& operator += (BigInteger b);
@@ -49,7 +54,9 @@ public:
 
 	bool is_prime(); 
 	BigInteger gcd(BigInteger b); // gcd(current, b)
-
+	unsigned long long int_repr();
+	BigInteger random(BigInteger leftBoard, BigInteger rightBoard);
+	BigInteger random(int key_size);
 
 	operator string(); // for conversion from BigInteger to string
 private:
